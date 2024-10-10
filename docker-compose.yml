@@ -1,0 +1,29 @@
+services:
+  wordpress:
+    depends_on:
+      - database
+    image: wordpress
+    ports:
+      - 80:80
+    environment:
+      WORDPRESS_DB_HOST: 'database:3306'
+      WORDPRESS_DB_NAME: 'wp_db'
+      WORDPRESS_DB_USER: 'wp_user'
+      WORDPRESS_DB_PASSWORD: 'wp_user_password'
+    volumes:
+      - ./wp-content:/var/www/html/wp-content
+
+  database:
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 'wp_root_password'
+      MYSQL_DATABASE: 'wp_db'
+      MYSQL_USER: 'wp_user'
+      MYSQL_PASSWORD: 'wp_user_password'
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
